@@ -7,7 +7,7 @@ using Apprenda.API.Extension.Bootstrapping;
 
 namespace Apprenda.Sample.BSP
 {
-    public class BootstrapperTest : BootstrapperBase
+    public class MySampleBootstrapper : BootstrapperBase
     {
         public override BootstrappingResult Bootstrap(BootstrappingRequest bootstrappingRequest)
         {
