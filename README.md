@@ -14,6 +14,6 @@ Additional information about creating bootstrap policies can be found here:
 3. Package your BSP by simply zipping up your compiled assemblies. 
 4. Upload to your System Operations Center (SOC) -> http://docs.apprenda.com/current/bootstrap-policies 
 
-# Modifying the Version
+# Modifying the Apprenda Target Version
 This BSP is packaged with the DLL for Apprenda Version 6.5.1. If you wish to use a different Apprenda version, simply replace the Apprenda.API.Extension.dll file in the lib folder with the desired version installed from your SDK. 
 
