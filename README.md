@@ -32,10 +32,11 @@ The Apprenda Watson Chat BSP (Bootstrap Policy) injects a chat client your websi
 	* Under the Custom Properties, click "Show Unused/Unrequired Properties"
 	* Select "Watson Chat" and change the value to "Yes".
 	* Click "Save".
+
 ![](/readme_images/custom_property.png)
 
 5. Promote your application to Sandbox or Published (triggering the bootstrap policy)
 
-![End Result](/readme_images/watsonchat_full.png)
+![](/readme_images/watsonchat_full.png)
 
 
