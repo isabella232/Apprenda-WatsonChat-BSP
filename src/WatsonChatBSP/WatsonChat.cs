@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Apprenda.API.Extension.Bootstrapping;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RestSharp;
 using System.IO;
-using System.Xml;
 using Apprenda.Services.Logging;
 using HtmlAgilityPack;
 
@@ -27,11 +21,9 @@ namespace Apprenda.WatsonChat.BSP
             var appPath = Path.Combine(bootstrappingRequest.ComponentPath, @"root\");
             string currPath = bootstrappingRequest.BootstrapperPath;
 
-            log.Info("appPath: " + appPath);
-            log.Info("currPath: " + currPath);
-
             try
             {
+                //Insert Watson Chat HTML and add Watson Conversation API URL to Javascript
                 List<string> watsonFiles = replaceWatsonChatToken(appPath, currPath);
                 copyWatsonContent(currPath, appPath);
             }
@@ -47,7 +39,7 @@ namespace Apprenda.WatsonChat.BSP
         public List<string> replaceWatsonChatToken(string appPath, string currPath)
         {
             var files = Directory.EnumerateFiles(appPath, "*.*", SearchOption.AllDirectories)
-            .Where(s => s.EndsWith(".html") || s.EndsWith(".cshtml"));
+            .Where(s => s.EndsWith(".html") || s.EndsWith(".cshtml") || s.EndsWith(".aspx"));
 
             List<string> watsonFiles = new List<string> { };
             HtmlDocument htmlDoc = new HtmlDocument();
@@ -57,6 +49,7 @@ namespace Apprenda.WatsonChat.BSP
                 foreach (var f in files)
                 {
                     htmlDoc.Load(f);
+                    //find watsonchatidentifier tag within the html/cshtml/aspx
                     var watsonid = htmlDoc.DocumentNode.Descendants()
                                     .Where(n => n.Name == "watsonchatidentifier")
                                     .FirstOrDefault();
@@ -66,6 +59,7 @@ namespace Apprenda.WatsonChat.BSP
                         watsonFiles.Add(f);
                         var watsonChatHTML = File.ReadAllText(currPath + @"\WatsonContent\html\WatsonChat.html");
                         var parent = watsonid.ParentNode;
+                        //Insert watson chat container html
                         parent.InsertAfter(htmlDoc.CreateTextNode(watsonChatHTML), watsonid);
                         //Remove watson tag after inserting WatsonChat.html
                         watsonid.Remove();
@@ -114,7 +108,6 @@ namespace Apprenda.WatsonChat.BSP
             // If the destination directory doesn't exist, create it.
             if (!Directory.Exists(destDirName))
             {
-                log.Fatal("Creating directory");
                 Directory.CreateDirectory(destDirName);
             }
 
@@ -124,7 +117,6 @@ namespace Apprenda.WatsonChat.BSP
             {
                 string temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, false);
-                log.Fatal("Copying files");
             }
 
             // If copying subdirectories, copy them and their contents to new location.
